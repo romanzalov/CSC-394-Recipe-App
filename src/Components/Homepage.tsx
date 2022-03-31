@@ -3,8 +3,6 @@ import {
   Button,
   CircularProgress,
   Grid,
-  Paper,
-  styled,
   TextField,
   Typography,
 } from "@mui/material";
@@ -15,14 +13,6 @@ import { allRecipesAtom, queryInputAtom } from "../State/atoms";
 import styles from "../Styles/Main.module.css";
 import NavBar from "./NavBar";
 import RecipeCard from "./RecipeCard";
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
 
 const Homepage = () => {
   const [allRecipes, setAllRecipes] = useRecoilState(allRecipesAtom);
@@ -38,6 +28,7 @@ const Homepage = () => {
 
   useEffect(() => {
     getAndSetAllRecipes();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
