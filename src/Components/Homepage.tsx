@@ -1,5 +1,5 @@
 import {
-    Box,
+  Box,
   Button,
   CircularProgress,
   Grid,
@@ -18,17 +18,20 @@ const Homepage = () => {
   const [allRecipes, setAllRecipes] = useRecoilState(allRecipesAtom);
   const [queryText, setQueryText] = useRecoilState(queryInputAtom);
   const [apiCallInporgress, setApiCallInProgress] = useState(false);
-  const getAndSetAllRecipes = async () => {
+  const getAndSetAllRecipes = async (query: string) => {
     setApiCallInProgress(true);
-    const data = await getRecipes(queryText);
+    const data = await getRecipes(query);
     setAllRecipes(data.hits.map((hit: any) => hit.recipe));
     console.log(data);
     setApiCallInProgress(false);
   };
 
   useEffect(() => {
-    getAndSetAllRecipes();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    const options = ["chicken", "beef", "vegan", "vegetables"];
+
+    //grabs a random keyword
+    getAndSetAllRecipes(options[Math.floor(Math.random() * options.length)]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -52,7 +55,7 @@ const Homepage = () => {
           />
           <Button
             variant="contained"
-            onClick={getAndSetAllRecipes}
+            onClick={() => getAndSetAllRecipes(queryText)}
             style={{ minHeight: "56px" }}
           >
             Find Recipes

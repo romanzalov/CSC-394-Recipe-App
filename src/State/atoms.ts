@@ -7,5 +7,5 @@ export const allRecipesAtom = atom({
 
 export const queryInputAtom = atom({
   key: "queryInputAtom",
-  default: 'chicken',
+  default: '',
 });
