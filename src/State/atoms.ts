@@ -1,11 +1,62 @@
-import { atom } from "recoil";
+import { atom } from 'recoil'
+import { BoardDataInterface, initalBoardData } from '../Components/MealPlan'
+import { exampleRecipe, Recipe } from '../Data/RecipeData'
 
-export const allRecipesAtom = atom({
-  key: "allRecipesAtom",
+export const allRecipesAtom = atom<Recipe[]>({
+  key: 'allRecipes',
   default: [],
-});
+})
 
-export const queryInputAtom = atom({
-  key: "queryInputAtom",
+export const selectedRecipeAtom = atom<Recipe>({
+  key: 'selectedRecipeAtom',
+  default: exampleRecipe,
+})
+export const queryInputAtom = atom<string>({
+  key: 'queryInput',
   default: '',
-});
+})
+
+export const maxNumIngredientsAtom = atom<number>({
+  key: 'maxNumIngredients',
+  default: 25,
+})
+
+export const maxCaloriesPerMealAtom = atom<number>({
+  key: 'maxCaloriesPerMeal',
+  default: 3000,
+})
+
+export const maxPrepTimeAtom = atom<number>({
+  key: 'maxPrepTimeAtom',
+  default: 240,
+})
+
+export const dietTypeAtom = atom<string[]>({
+  key: 'dietType',
+  default: [],
+})
+
+export const healthTypeAtom = atom<string[]>({
+  key: 'healthType',
+  default: [],
+})
+
+export const cuisineTypeAtom = atom<string[]>({
+  key: 'cuisineType',
+  default: [],
+})
+
+export const generatedMealPlanAtom = atom<object[]>({
+  key: 'generatedMealPlan',
+  default: [],
+})
+
+export const homePageLoadedAtom = atom<boolean>({
+  key: 'homePageLoaded',
+  default: false,
+})
+
+export const mealPrepBoardDataAtom = atom<BoardDataInterface>({
+  key: 'MealPrepBoardData',
+  default: initalBoardData,
+})

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "noImplicitAny": false,
     "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "lib": [
       "dom",
