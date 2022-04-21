@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "firebase": "9.1.3",
     "@asseinfo/react-kanban": "^2.2.0",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
