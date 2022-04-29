@@ -1,5 +1,5 @@
 import { Alert, Autocomplete, Box, Button, Grid, Slider, TextField } from '@mui/material'
-import { useRecoilState, useSetRecoilState } from 'recoil'
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil'
 import { cuisineTypeData, DietData, HealthData } from '../Data/MealPrepData'
 import {
   cuisineTypeAtom,
@@ -9,6 +9,7 @@ import {
   maxCaloriesPerMealAtom,
   maxNumIngredientsAtom,
   maxPrepTimeAtom,
+  mealPlanNameAtom,
   mealPrepBoardDataAtom,
 } from '../State/atoms'
 import NavBar from './NavBar'
@@ -27,7 +28,7 @@ const MealPrepGenerator = () => {
   const [showLimitedRecipeAlert, setShowLimitedRecipeAlert] = useState(false)
   const setBoardData = useSetRecoilState(mealPrepBoardDataAtom)
   const navigate = useNavigate()
-
+  const resetMealPlanName = useResetRecoilState(mealPlanNameAtom)
   const generateMealPlan = async () => {
     const url = new URL('https://api.edamam.com/api/recipes/v2')
     const app_id = 'ecfc8a8c'
@@ -42,7 +43,7 @@ const MealPrepGenerator = () => {
       app_key,
       ingr: maxNumIngredients,
       calories: maxCaloriesPerMeal,
-      time:maxPrepTime,
+      time: maxPrepTime,
       diet: dietType.length > 0 ? dietType : ['balanced'],
       health: healthType.length > 0 ? healthType : ['alcohol-free'],
       ...(cuisineType.length > 0 && { cuisineType }),
@@ -79,6 +80,7 @@ const MealPrepGenerator = () => {
             ],
           } as BoardDataInterface),
       )
+      resetMealPlanName()
       navigate('/mealplan')
     } catch (e) {
       console.error(e)

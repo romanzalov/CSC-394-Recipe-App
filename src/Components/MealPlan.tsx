@@ -1,14 +1,27 @@
-import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
-import { FC } from 'react'
+import {
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+} from '@mui/material'
+import { FC, useState } from 'react'
 import NavBar from './NavBar'
 // import Board from 'react-trello'
 import { Recipe } from '../Data/RecipeData'
 import { CSSProperties } from '@emotion/serialize'
-import { useRecoilState } from 'recoil'
-import { mealPrepBoardDataAtom } from '../State/atoms'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { mealPlanNameAtom, mealPrepBoardDataAtom, userAtom } from '../State/atoms'
 import Board, { moveCard } from '@asseinfo/react-kanban'
 import '@asseinfo/react-kanban/dist/styles.css'
-
+import { doc, setDoc } from 'firebase/firestore'
+import { db } from '../firebase'
+import { LoadingButton } from '@mui/lab'
+import { v4 as uuidv4 } from 'uuid'
 export interface LaneInterface {
   id: string
   title: string
@@ -90,11 +103,40 @@ const CustomCard = ({ recipe }: { recipe: Recipe }) => {
 
 const MealPrep: FC = (props) => {
   const [boardData, setBoardData] = useRecoilState(mealPrepBoardDataAtom)
+  const [savingData, setSavingData] = useState(false)
+  const userLoginData = useRecoilValue(userAtom)
+  const [mealPlanName, setMealPlaneName] = useRecoilState(mealPlanNameAtom)
   function handleCardMove(_card, source, destination) {
     const updatedBoard = moveCard(boardData, source, destination)
     setBoardData(updatedBoard)
   }
-  const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Weekly Total (700% Recommended)']
+
+  const OnSaveMealPlanClick = async () => {
+    setSavingData(true)
+    const { user } = userLoginData
+    const id = uuidv4()
+    const docRef = doc(db, 'mealPlans', id)
+    await setDoc(docRef, {
+      name: mealPlanName,
+      id: id,
+      createdAt: new Date().toISOString(),
+      createdBy: user.uid,
+      mealPlan: boardData,
+    })
+    console.log('added meal plan')
+    setSavingData(false)
+  }
+
+  const weekDays = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+    'Weekly Total (700% Recommended)',
+  ]
 
   const calculateWeekdayTotals = (idx: number) => {
     //iterate over every card in each weekday, sum up every nutrition metric, add they key to the object and return the object
@@ -129,6 +171,26 @@ const MealPrep: FC = (props) => {
     <>
       <NavBar />
       <Grid container justifyContent="center" alignItems="center" style={{ marginTop: 10 }}>
+        {Object.keys(userLoginData).length > 0 && (
+          <Grid item mb={2} mt={2}>
+            <TextField
+              id="outlined-basic"
+              label="Meal Plan Name"
+              variant="outlined"
+              value={mealPlanName}
+              size="small"
+              onChange={(e) => setMealPlaneName(e.target.value)}
+            />
+            <LoadingButton
+              variant="outlined"
+              loading={savingData}
+              onClick={OnSaveMealPlanClick}
+              sx={{ height: '40px', marginLeft: '16px' }}
+            >
+              Save Meal Plan
+            </LoadingButton>
+          </Grid>
+        )}
         <Grid item xs={12}>
           <TableContainer component={Paper}>
             <Table size="small" aria-label="simple table">
