@@ -115,7 +115,7 @@ const MealPrep: FC = (props) => {
     setSavingData(true)
     const { user } = userLoginData
     const id = uuidv4()
-    const docRef = doc(db, 'mealPlans', id)
+    const docRef = doc(db, 'mealPlans', mealPlanName)
     await setDoc(docRef, {
       name: mealPlanName,
       id: id,
