@@ -24,9 +24,8 @@ const SavedMealPlans = () => {
 
   const onDeleteMealPlanButton = async (id: string) => {
     const mealPlans = { ...savedUserMealPlans }
-    const mealPlanId = mealPlans[id].id
     delete mealPlans[id]
-    const docRef = doc(db, 'mealPlans', mealPlanId)
+    const docRef = doc(db, 'mealPlans', id)
     await deleteDoc(docRef)
     setSavedUserMealPlans(mealPlans)
   }
