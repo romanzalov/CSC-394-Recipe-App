@@ -112,6 +112,7 @@ const MealPrep: FC = (props) => {
   }
 
   const OnSaveMealPlanClick = async () => {
+    console.log('NAMe', mealPlanName)
     setSavingData(true)
     const { user } = userLoginData
     const id = uuidv4()

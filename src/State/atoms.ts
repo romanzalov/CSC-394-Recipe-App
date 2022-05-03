@@ -75,5 +75,5 @@ export const userSavedMealPlansAtom = atom<object>({
 
 export const mealPlanNameAtom = atom<string>({
   key: 'mealPlanNameAtom',
-  default: new Date().toLocaleString(),
+  default: 'RENAME_ME',
 })
