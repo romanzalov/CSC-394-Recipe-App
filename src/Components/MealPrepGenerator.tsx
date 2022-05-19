@@ -88,6 +88,7 @@ const MealPrepGenerator = () => {
     }
   }
 
+  console.log('working')
   return (
     <div>
       <NavBar />
